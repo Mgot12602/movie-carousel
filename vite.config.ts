@@ -4,7 +4,7 @@ import { resolve } from "path";
 
 export default defineConfig(({ command, mode }) => {
   const isSSRBuild = mode === "production" && process.argv.includes("--ssr");
-  
+
   const config: UserConfig = {
     plugins: [react()],
     esbuild: {
@@ -15,7 +15,7 @@ export default defineConfig(({ command, mode }) => {
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `@import "@/styles/variables.scss";`,
+          additionalData: `@use "@/styles/variables.scss" as *;`,
         },
       },
     },

@@ -1,0 +1,101 @@
+.carousel-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.carousel-viewport {
+  flex: 1;
+  overflow: hidden;
+  margin: 0 10px;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.4s ease;
+  width: 100%;
+  transform: translateX(
+    calc(-100% * var(--current-index, 0) / var(--items-to-show, 1))
+  );
+}
+
+.carousel-item {
+  flex: 0 0 calc(100% / var(--items-to-show, 4)); /* Use CSS variable with fallback to 4 */
+  padding: 0 5px;
+  box-sizing: border-box;
+
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+    display: block;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+  }
+}
+
+.carousel-arrow {
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 24px;
+  z-index: 2;
+  transition: background 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  &-left {
+    margin-right: 10px;
+  }
+
+  &-right {
+    margin-left: 10px;
+  }
+}
+
+// Responsive adjustments
+@media screen and (max-width: 1024px) {
+  .carousel-item {
+    flex: 0 0 calc(100% / 3); // Show 3 items on tablets
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .carousel-item {
+    flex: 0 0 calc(100% / 2); // Show 2 items on small tablets
+  }
+
+  .carousel-arrow {
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .carousel-item {
+    flex: 0 0 100%; // Show 1 item on mobile
+  }
+}

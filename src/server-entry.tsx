@@ -26,7 +26,6 @@ function getPathFromUrl(url: string): string {
 async function getInitialData(url: string): Promise<any> {
   try {
     const path = getPathFromUrl(url);
-    console.log("url", url);
     const match = routes.find((r: Route) => r.path === path);
     if (!match) {
       return null;

@@ -34,7 +34,6 @@ if (!isProduction) {
 // Serve HTML
 app.use("/{*any}", async (req, res, next) => {
   try {
-    console.log("req.originalUrl", req.originalUrl);
     const url = req.originalUrl;
 
     let template;
