@@ -25,6 +25,7 @@
   flex: 0 0 calc(100% / var(--items-to-show, 4)); /* Use CSS variable with fallback to 4 */
   padding: 0 5px;
   box-sizing: border-box;
+  cursor: pointer;
 
   img {
     width: 100%;

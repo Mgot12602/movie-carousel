@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./Carousel.scss";
 
 export interface ICarouselItem {
+  id: number;
   image: string;
   [key: string]: any;
 }
@@ -9,9 +10,14 @@ export interface ICarouselItem {
 interface Props {
   items: ICarouselItem[];
   itemsToShow?: number;
+  onClickItem?: (item: ICarouselItem) => void;
 }
 
-export const Carousel: React.FC<Props> = ({ items, itemsToShow = 6 }) => {
+export const Carousel: React.FC<Props> = ({
+  items,
+  onClickItem,
+  itemsToShow = 6,
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Calculate max index based on items length and items to show
@@ -50,9 +56,13 @@ export const Carousel: React.FC<Props> = ({ items, itemsToShow = 6 }) => {
 
       <div className="carousel-viewport">
         <div className="carousel-track">
-          {items.map((item, index) => (
-            <div className="carousel-item" key={`carousel-item-${index}`}>
-              <img src={item.image} alt={`Item ${index + 1}`} />
+          {items.map((item) => (
+            <div
+              className="carousel-item"
+              key={`carousel-item-${item.id}`}
+              onClick={() => onClickItem?.(item)}
+            >
+              <img src={item.image} alt={`Item ${item.id}`} />
             </div>
           ))}
         </div>

@@ -33,13 +33,11 @@ const Home: React.FC<HomeProps> & ComponentWithSSR = ({ initialData = {} }) => {
           <h2>Movies ({selectedGenresData.length})</h2>
           <ul>
             {selectedGenresData.map((genreData) => (
-              <>
-                <CarouselSection
-                  title={genreData.genre}
-                  items={genreData.movies}
-                  key={genreData.genre}
-                />
-              </>
+              <CarouselSection
+                title={genreData.genre}
+                items={genreData.movies}
+                key={genreData.genre}
+              />
             ))}
           </ul>
         </div>
@@ -108,7 +106,9 @@ Home.getServerSideData = async (): Promise<InitialData> => {
           movies: genreSelection.movies.map((movie: Movie) => ({
             id: movie.id,
             title: movie.title,
-            image: buildImageUrl(movie.poster_path, "w92"),
+            image: buildImageUrl(movie.poster_path, "w154"),
+            posterPath: movie.poster_path,
+            carouselGenre: genreSelection.genre,
           })),
         })
       );

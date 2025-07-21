@@ -1,34 +1,14 @@
-import { GenreListResponse, MovieListResponse } from "@/types/movie.js";
+import {
+  GenreListResponse,
+  MovieDetailResponse,
+  MovieListResponse,
+} from "@/types/movie.js";
 import { BaseApi } from "./BaseApi.js";
+import buildUrl from "@/utils/buildUrl";
 
 /**
  * TMDB API Movie object structure
  */
-
-export type GenreName =
-  | "Action"
-  | "Adventure"
-  | "Animation"
-  | "Comedy"
-  | "Crime"
-  | "Documentary"
-  | "Drama"
-  | "Family"
-  | "Fantasy"
-  | "History"
-  | "Horror"
-  | "Music"
-  | "Mystery"
-  | "Science Fiction"
-  | "TV Movie"
-  | "Thriller"
-  | "War"
-  | "Western";
-
-export interface Genre {
-  id: number;
-  name: GenreName;
-}
 
 const movieApiConfig = {
   endpoints: {
@@ -36,22 +16,6 @@ const movieApiConfig = {
     getMovies: "discover/movie",
   },
 };
-
-function buildUrl(
-  endpoint: string,
-  params: Record<string, string | number | boolean> = {}
-): string {
-  const searchParams = new URLSearchParams();
-
-  Object.entries(params).forEach(([key, value]) => {
-    if (value !== undefined && value !== null) {
-      searchParams.append(key, String(value));
-    }
-  });
-
-  const queryString = searchParams.toString();
-  return `${endpoint}?${queryString}`;
-}
 
 export class MovieApi extends BaseApi {
   constructor() {
@@ -98,6 +62,12 @@ export class MovieApi extends BaseApi {
     const data = await this.get<MovieListResponse>(endpoint);
     console.log("data", data);
     return data.results ?? [];
+  }
+
+  async getDetailsById(id: number): Promise<MovieDetailResponse> {
+    const data = await this.get<MovieDetailResponse>(id.toString());
+    console.log("data", data);
+    return data;
   }
 }
 
