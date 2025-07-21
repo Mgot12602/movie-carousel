@@ -94,7 +94,7 @@ export interface SpokenLanguage {
   name: string;
 }
 
-export interface MovieDetailResponse {
+export interface MovieDetailsResponse {
   adult: boolean;
   backdrop_path: string | null;
   belongs_to_collection: null | {
@@ -135,4 +135,16 @@ export interface MovieDetailResponse {
   video: boolean;
   vote_average: number;
   vote_count: number;
+}
+
+export interface MovieDetails {
+  id: number;
+  title: string;
+  image: string;
+  description: string;
+  carouselGenre: GenreName;
+  additionalInfo: {
+    releaseDate: string;
+    status: string;
+  };
 }

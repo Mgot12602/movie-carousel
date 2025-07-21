@@ -1,5 +1,6 @@
 import { ComponentType } from "react";
-import Home from "./pages/Home";
+import Home from "@/pages/Home";
+import Details from "@/pages/Details";
 
 /**
  * Route configuration interface
@@ -16,5 +17,9 @@ export const routes: Route[] = [
   {
     path: "/",
     component: Home,
+  },
+  {
+    path: "/details",
+    component: Details,
   },
 ];

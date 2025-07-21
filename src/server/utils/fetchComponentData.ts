@@ -5,7 +5,7 @@ import { ComponentType } from "react";
  */
 type Component =
   | (ComponentType & {
-      getServerSideData?: () => Promise<any>;
+      getServerSideData?: (url: string) => Promise<any>;
     })
   | null;
 
@@ -13,10 +13,13 @@ type Component =
  * Generic data fetcher - completely agnostic
  * Works with any component that has a getServerSideData method
  */
-export async function fetchComponentData(Component: Component): Promise<any> {
+export async function fetchComponentData(
+  Component: Component,
+  url: string
+): Promise<any> {
   if (Component?.getServerSideData) {
     try {
-      return await Component.getServerSideData();
+      return await Component.getServerSideData(url);
     } catch (error) {
       console.error(`Component data fetching error:`, error);
       return { error: "Failed to load data" };

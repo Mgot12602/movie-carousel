@@ -1,8 +1,8 @@
 import React from "react";
 import { Carousel, ICarouselItem } from "@/components/UI/Carousel/Carousel";
 import "./CarouselSection.scss";
-import { MovieItem, SelectedGenre } from "@/types/movie";
-import { useNavigate } from "react-router";
+import { MovieItem } from "@/types/movie";
+import buildUrl from "@/utils/buildUrl";
 
 interface Props {
   title: string;
@@ -10,14 +10,8 @@ interface Props {
 }
 
 export const CarouselSection: React.FC<Props> = ({ title, items }) => {
-  const navigate = useNavigate();
   // Default items to show - can be made responsive if needed
   const itemsToShow = 8;
-
-  const onClickItem = (item: ICarouselItem & { carouselGenre?: string }) => {
-    // Navigate to /:movieId?genre=:genre
-    navigate(`/${item.carouselGenre}/${item.id}`);
-  };
 
   // Convert MovieItem to ICarouselItem for the Carousel
   const carouselItems = items.map((item) => ({
@@ -25,6 +19,14 @@ export const CarouselSection: React.FC<Props> = ({ title, items }) => {
     image: item.image,
     carouselGenre: item.carouselGenre,
   }));
+
+  const onClickItem = (item: ICarouselItem) => {
+    const url = buildUrl("details", {
+      genre: item.carouselGenre,
+      id: item.id,
+    });
+    window.location.href = url;
+  };
 
   return (
     <div className="carousel-section">

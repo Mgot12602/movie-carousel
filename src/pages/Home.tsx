@@ -8,6 +8,7 @@ import {
   Movie,
   SelectedGenre,
 } from "@/types/movie";
+import buildImageUrl from "@/utils/buildImageUrl";
 
 interface HomeProps {
   initialData?: InitialData;
@@ -52,7 +53,7 @@ Home.getServerSideData = async (): Promise<InitialData> => {
   try {
     // Try to fetch real movie data first
     // Dynamically import server-only API on the server
-    const { movieApi } = await import("../services/index");
+    const { movieApi } = await import("@/services/index");
     const genres = await movieApi.getGenresList();
     const SELECTED_GENRES: GenreName[] = ["Action", "Comedy", "Drama"];
 
@@ -83,20 +84,6 @@ Home.getServerSideData = async (): Promise<InitialData> => {
     // Wait for all promises to resolve
     const selectedGenresResponse = await Promise.all(genrePromises);
 
-    function buildImageUrl(imagePath: string | null, imageSize: ImageSizes) {
-      try {
-        const baseUrl = process.env.IMAGES_API_BASE_URL;
-        if (!baseUrl) {
-          console.error("IMAGES_API_BASE_URL environment variable is not set");
-        }
-        const path = imageSize + imagePath;
-        return new URL(path, baseUrl).toString();
-      } catch (error) {
-        console.error("Error building image URL:", error);
-        return "";
-      }
-    }
-
     function selectedGenresToDomainMapper(
       selectedGenresResponse: any
     ): SelectedGenre[] {
@@ -118,7 +105,7 @@ Home.getServerSideData = async (): Promise<InitialData> => {
       selectedGenresResponse
     );
 
-    console.log("selectedGenresData", selectedGenresData);
+    /* console.log("selectedGenresData", selectedGenresData); */
 
     return {
       selectedGenresData,

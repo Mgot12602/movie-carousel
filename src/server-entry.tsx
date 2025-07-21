@@ -24,14 +24,21 @@ function getPathFromUrl(url: string): string {
  * Get initial data for server-side rendering
  */
 async function getInitialData(url: string): Promise<any> {
+  console.log("url in get InitialData", url);
   try {
     const path = getPathFromUrl(url);
-    const match = routes.find((r: Route) => r.path === path);
+    const match = routes.find((r: Route) => {
+      console.log("r.path", r.path);
+      console.log("path", path);
+      return r.path === path;
+    });
+    console.log("Match", match);
     if (!match) {
       return null;
     }
-    const Component = match ? match.component : null;
-    return fetchComponentData(Component);
+
+    const Component = match.component;
+    return fetchComponentData(Component, url);
   } catch (error) {
     console.error(`Component data fetching error:`, error);
     return null;

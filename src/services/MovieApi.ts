@@ -1,6 +1,6 @@
 import {
   GenreListResponse,
-  MovieDetailResponse,
+  MovieDetailsResponse,
   MovieListResponse,
 } from "@/types/movie.js";
 import { BaseApi } from "./BaseApi.js";
@@ -58,14 +58,15 @@ export class MovieApi extends BaseApi {
       with_genres: genreId,
       sort_by: "popularity.desc",
     });
-    console.log("endpoint", endpoint);
+    /* console.log("endpoint", endpoint); */
     const data = await this.get<MovieListResponse>(endpoint);
-    console.log("data", data);
+    /* console.log("data", data); */
     return data.results ?? [];
   }
 
-  async getDetailsById(id: number): Promise<MovieDetailResponse> {
-    const data = await this.get<MovieDetailResponse>(id.toString());
+  async getDetailsById(id: number): Promise<MovieDetailsResponse> {
+    const endpoint = `movie/${id}`;
+    const data = await this.get<MovieDetailsResponse>(endpoint);
     console.log("data", data);
     return data;
   }
