@@ -1,6 +1,10 @@
 import { GenreName, MovieDetails, MovieDetailsResponse } from "@/types/movie";
 import buildImageUrl from "@/utils/buildImageUrl";
 import "./Details.scss"; // Import the SCSS file from the same directory
+import Layout from "@/components/UI/Layout/Layout";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router";
+import useInitialData from "@/hooks/useInitialData";
 
 type FontFamily = "Segoe UI" | "Roboto" | "Oxygen";
 
@@ -19,52 +23,73 @@ interface InitialData {
 }
 
 const Details = ({ initialData }: DetailsProps) => {
-  if (!initialData) {
+  const { initialDataState } = useInitialData<InitialData>(initialData);
+  const movieDetails = initialDataState?.movieDetails;
+
+  if (!movieDetails) {
     return <div>Loading...</div>;
   }
-  const { error, movieDetails } = initialData;
+
+  /* const { error, movieDetails } = initialData; */
   const fontFamily = detailsFontsConfig[movieDetails.carouselGenre];
   console.log("fontFamily", fontFamily);
+
   return (
-    <div
-      className="details-container"
-      style={
-        {
-          "--details-font-family": fontFamily,
-        } as React.CSSProperties
-      }
-    >
-      <div>{movieDetails.title}</div>
-      <div>
-        <img src={movieDetails.image} alt={movieDetails.title} />
+    <Layout>
+      <div
+        className="details-container"
+        style={
+          {
+            "--details-font-family": fontFamily,
+          } as React.CSSProperties
+        }
+      >
+        <div className="details-container__image-description-box">
+          <section className="details-container__image details-container__box">
+            <img src={movieDetails.image} alt={movieDetails.title} />
+          </section>
+          <section className="details-container__description details-container__box">
+            <h1>{movieDetails.title}</h1>
+            <p>{movieDetails.description}</p>
+          </section>
+        </div>
+        <section className="details-container__box">
+          <h2>Additional Information</h2>
+          <p>Release Date: {movieDetails.additionalInfo.releaseDate}</p>
+          <p>Status: {movieDetails.additionalInfo.status}</p>
+        </section>
       </div>
-      <div>{movieDetails.description}</div>
-    </div>
+    </Layout>
   );
 };
 
 export default Details;
 
-Details.getServerSideData = async (url: string): Promise<any> => {
+const fetchDetailsData = async (
+  url: string
+): Promise<{ movieDetails?: MovieDetails; error?: string }> => {
   try {
-    console.log("url in DetailsgetServerSideData", url);
+    console.log("Fetching details data for URL:", url);
     const { movieApi } = await import("@/services/index");
 
     const newUrl = new URL(url, "http://localhost");
     const id = newUrl.searchParams.get("id");
     const genre = newUrl.searchParams.get("genre") as GenreName;
+
     if (!id) {
       console.error("id or genre is not defined");
       return {
         error: "id or genre is not defined",
       };
     }
+
     const movieDetailsResponse = await movieApi.getDetailsById(Number(id));
     console.log("movie Details", movieDetailsResponse);
 
-    function movieDetailsToDomainMapper(
+    // Domain mapper function
+    const movieDetailsToDomainMapper = (
       movieDetailsResponse: MovieDetailsResponse
-    ): MovieDetails {
+    ): MovieDetails => {
       return {
         id: movieDetailsResponse.id,
         title: movieDetailsResponse.title,
@@ -76,22 +101,23 @@ Details.getServerSideData = async (url: string): Promise<any> => {
           status: movieDetailsResponse.status,
         },
       };
-    }
+    };
+
     const movieDetails = movieDetailsToDomainMapper(movieDetailsResponse);
 
     return {
       movieDetails,
     };
-    /*  console.log("id", id);
-    const movie = await movieApi.getDetailsById(id);
-    console.log("movie Details", movie); */
   } catch (error) {
     console.error("Error fetching movie details:", error);
     return {
-      movieDetails: [],
       error: `API Error: ${
         error instanceof Error ? error.message : "Unknown error"
       }`,
     };
   }
+};
+
+Details.getServerSideData = async (url: string): Promise<any> => {
+  return await fetchDetailsData(url);
 };

@@ -3,6 +3,7 @@ import { Carousel, ICarouselItem } from "@/components/UI/Carousel/Carousel";
 import "./CarouselSection.scss";
 import { MovieItem } from "@/types/movie";
 import buildUrl from "@/utils/buildUrl";
+import { useNavigate } from "react-router";
 
 interface Props {
   title: string;
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export const CarouselSection: React.FC<Props> = ({ title, items }) => {
+  const navigate = useNavigate();
   // Default items to show - can be made responsive if needed
   const itemsToShow = 8;
 
@@ -25,7 +27,7 @@ export const CarouselSection: React.FC<Props> = ({ title, items }) => {
       genre: item.carouselGenre,
       id: item.id,
     });
-    window.location.href = url;
+    navigate(url);
   };
 
   return (

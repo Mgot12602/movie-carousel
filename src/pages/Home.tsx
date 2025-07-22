@@ -9,6 +9,8 @@ import {
   SelectedGenre,
 } from "@/types/movie";
 import buildImageUrl from "@/utils/buildImageUrl";
+import Layout from "@/components/UI/Layout/Layout";
+import useInitialData from "@/hooks/useInitialData";
 
 interface HomeProps {
   initialData?: InitialData;
@@ -23,41 +25,34 @@ interface ComponentWithSSR {
 }
 
 const Home: React.FC<HomeProps> & ComponentWithSSR = ({ initialData = {} }) => {
-  const { error, selectedGenresData } = initialData;
+  const { initialDataState } = useInitialData<InitialData>(initialData);
+  const { selectedGenresData } = initialDataState || {};
 
   return (
-    <div>
-      <h1>Popular Movies</h1>
-
+    <Layout>
       {selectedGenresData && selectedGenresData.length > 0 ? (
         <div>
-          <h2>Movies ({selectedGenresData.length})</h2>
-          <ul>
-            {selectedGenresData.map((genreData) => (
-              <CarouselSection
-                title={genreData.genre}
-                items={genreData.movies}
-                key={genreData.genre}
-              />
-            ))}
-          </ul>
+          {selectedGenresData.map((genreData) => (
+            <CarouselSection
+              title={genreData.genre}
+              items={genreData.movies}
+              key={genreData.genre}
+            />
+          ))}
         </div>
       ) : (
         <p>No movies available</p>
       )}
-    </div>
+    </Layout>
   );
 };
 
 Home.getServerSideData = async (): Promise<InitialData> => {
   try {
-    // Try to fetch real movie data first
-    // Dynamically import server-only API on the server
     const { movieApi } = await import("@/services/index");
     const genres = await movieApi.getGenresList();
     const SELECTED_GENRES: GenreName[] = ["Action", "Comedy", "Drama"];
 
-    // Create an array of promises using async map function
     const genrePromises = SELECTED_GENRES.map(async (genre: GenreName) => {
       const genreId = genres.find((g: Genre) => g.name === genre)?.id;
       if (!genreId) {
@@ -81,7 +76,6 @@ Home.getServerSideData = async (): Promise<InitialData> => {
       };
     });
 
-    // Wait for all promises to resolve
     const selectedGenresResponse = await Promise.all(genrePromises);
 
     function selectedGenresToDomainMapper(
@@ -104,8 +98,6 @@ Home.getServerSideData = async (): Promise<InitialData> => {
     const selectedGenresData = selectedGenresToDomainMapper(
       selectedGenresResponse
     );
-
-    /* console.log("selectedGenresData", selectedGenresData); */
 
     return {
       selectedGenresData,
