@@ -12,7 +12,7 @@ const Whishlisted: React.FC = () => {
   if (!favoriteMovies.length) {
     return (
       <Layout>
-        <section className="box">
+        <section className="box container">
           <h2>No Favorite Movies</h2>
           <p>Movies you favorite will appear here</p>
           <Link to="/">Browse Movies</Link>

@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router";
 import "./Header.scss";
 
@@ -8,12 +7,12 @@ const Header = () => {
       <nav className="header__nav">
         <div className="header__title">
           <Link to="/" className="header__link">
-            {"Home"}
+            <h1>Home</h1>
           </Link>
         </div>
         <div className="header__actions">
           <Link to="/wishlisted" className="header__link">
-            Wishlisted
+            <h2>Wishlisted</h2>
           </Link>
         </div>
       </nav>

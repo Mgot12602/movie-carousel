@@ -6,32 +6,23 @@ import {
 import { BaseApi } from "./BaseApi.js";
 import buildUrl from "@/utils/buildUrl";
 
-/**
- * TMDB API Movie object structure
- */
-
-const movieApiConfig = {
-  endpoints: {
-    getGenresList: "genre/movie/list",
-    getMovies: "discover/movie",
-  },
+const getRequiredEnv = (key: string): string => {
+  const value = process.env[key];
+  if (!value) {
+    throw new Error(`${key} environment variable is not set`);
+  }
+  return value;
 };
 
 export class MovieApi extends BaseApi {
+  protected readonly genresListEndpoint: string;
+  protected readonly moviesEndpoint: string;
+  protected readonly movieDetailsEndpoint: string;
+
   constructor() {
-    // Validate required environment variables
-    const apiKey = process.env.MOVIE_API_KEY;
-    const baseUrl = process.env.MOVIE_API_BASE_URL;
+    const apiKey = getRequiredEnv("MOVIE_API_KEY");
+    const baseUrl = getRequiredEnv("MOVIE_API_BASE_URL");
 
-    if (!apiKey) {
-      throw new Error("MOVIE_API_KEY environment variable is not set");
-    }
-
-    if (!baseUrl) {
-      throw new Error("MOVIE_API_BASE_URL environment variable is not set");
-    }
-
-    // Initialize parent class with base URL and headers
     super(baseUrl, {
       authToken: apiKey,
       headers: {
@@ -39,10 +30,14 @@ export class MovieApi extends BaseApi {
         "Content-Type": "application/json",
       },
     });
+
+    this.genresListEndpoint = getRequiredEnv("GENRES_LIST_ENDPOINT");
+    this.moviesEndpoint = getRequiredEnv("MOVIES_ENDPOINT");
+    this.movieDetailsEndpoint = getRequiredEnv("MOVIE_DETAILS_ENDPOINT");
   }
 
   async getGenresList(): Promise<GenreListResponse["genres"]> {
-    const endpoint = movieApiConfig.endpoints.getGenresList;
+    const endpoint = this.genresListEndpoint;
     const data = await this.get<GenreListResponse>(endpoint);
     return data.genres ?? [];
   }
@@ -50,7 +45,7 @@ export class MovieApi extends BaseApi {
   async getMoviesByGenreId(
     genreId: number
   ): Promise<MovieListResponse["results"]> {
-    const endpoint = buildUrl(movieApiConfig.endpoints.getMovies, {
+    const endpoint = buildUrl(this.moviesEndpoint, {
       include_adult: false,
       include_video: false,
       language: "en-US",
@@ -58,16 +53,13 @@ export class MovieApi extends BaseApi {
       with_genres: genreId,
       sort_by: "popularity.desc",
     });
-    /* console.log("endpoint", endpoint); */
     const data = await this.get<MovieListResponse>(endpoint);
-    /* console.log("data", data); */
     return data.results ?? [];
   }
 
   async getDetailsById(id: number): Promise<MovieDetailsResponse> {
-    const endpoint = `movie/${id}`;
+    const endpoint = `${this.movieDetailsEndpoint}/${id}`;
     const data = await this.get<MovieDetailsResponse>(endpoint);
-    console.log("data", data);
     return data;
   }
 }

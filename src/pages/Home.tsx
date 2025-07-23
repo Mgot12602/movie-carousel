@@ -36,7 +36,7 @@ const Home: React.FC<HomeProps> & ComponentWithSSR = ({ initialData = {} }) => {
           ))}
         </div>
       ) : (
-        <p>No movies available</p>
+        <p>Loading...</p>
       )}
     </Layout>
   );
