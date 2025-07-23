@@ -47,6 +47,12 @@ To create the production build:
 yarn build
 ```
 
+To start the production build:
+
+```bash
+yarn start
+```
+
 ---
 
 ## ⚙️ Project Details
@@ -58,6 +64,7 @@ yarn build
   ⚠️ **Note**: This is **not recommended** for real-world projects as it contains sensitive information like API keys and account IDs. In production, a `.env.sample` should be provided instead and sensitive tokens requested via other secure means.
 - State management is handled with **Zustand**, using `localStorage` persistence to simulate the "favorites" feature.
 - While TMDB API supports adding favorites via guest sessions, it presented issues with authentication as per its documentation. Given that Mytheresa uses TMDB as a source, a local implementation was chosen instead for reliability.
+- Added test support with vitest with react-testing-library
 
 ---
 

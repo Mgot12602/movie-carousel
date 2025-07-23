@@ -4,7 +4,7 @@ import tsParser from "@typescript-eslint/parser";
 
 export default [
   {
-    files: ["**/*.ts", "**/*.tsx"],
+    files: ["src/**/*.{ts,tsx}"],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
@@ -15,7 +15,6 @@ export default [
           jsx: true,
         },
       },
-      exclude: ["vite.config.js"],
       globals: {
         console: "readonly",
         process: "readonly",
@@ -31,7 +30,7 @@ export default [
     },
   },
   {
-    files: ["**/*.js"],
+    files: ["src/**/*.{js,jsx}"],
     languageOptions: {
       globals: {
         console: "readonly",

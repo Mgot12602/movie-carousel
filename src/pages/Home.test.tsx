@@ -2,9 +2,10 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-import Home from "./Home";
+import Home, { InitialData } from "./Home";
+import { Movie } from "@/types/movie";
 
-let mockInitialData: any = null;
+let mockInitialData: InitialData | undefined = undefined;
 
 vi.mock("@/hooks/useInitialData", () => {
   return {
@@ -25,7 +26,7 @@ vi.mock("@/components/UI/Layout/Layout", () => {
 vi.mock("@/components/CarouselSection", () => {
   return {
     __esModule: true,
-    CarouselSection: ({ title, items }: { title: string; items: any[] }) => (
+    CarouselSection: ({ title, items }: { title: string; items: Movie[] }) => (
       <div data-testid="carousel-section">
         <h3>{title}</h3>
         {items?.map((item) => (
@@ -38,7 +39,7 @@ vi.mock("@/components/CarouselSection", () => {
 
 describe("Home component", () => {
   beforeEach(() => {
-    mockInitialData = null;
+    mockInitialData = undefined;
     vi.clearAllMocks();
   });
 
@@ -72,17 +73,45 @@ describe("Home component", () => {
         {
           genre: "Action",
           movies: [
-            { id: 1, title: "Action Movie 1" },
-            { id: 2, title: "Action Movie 2" },
+            {
+              id: 1,
+              title: "Action Movie 1",
+              image: "/path/to/image1.jpg",
+              posterPath: "/path/to/poster1.jpg",
+              carouselGenre: "Action",
+            },
+            {
+              id: 2,
+              title: "Action Movie 2",
+              image: "/path/to/image2.jpg",
+              posterPath: "/path/to/poster2.jpg",
+              carouselGenre: "Action",
+            },
           ],
         },
         {
           genre: "Comedy",
-          movies: [{ id: 3, title: "Comedy Movie 1" }],
+          movies: [
+            {
+              id: 3,
+              title: "Comedy Movie 1",
+              image: "/path/to/image3.jpg",
+              posterPath: "/path/to/poster3.jpg",
+              carouselGenre: "Comedy",
+            },
+          ],
         },
         {
           genre: "Drama",
-          movies: [{ id: 4, title: "Drama Movie 1" }],
+          movies: [
+            {
+              id: 4,
+              title: "Drama Movie 1",
+              image: "/path/to/image4.jpg",
+              posterPath: "/path/to/poster4.jpg",
+              carouselGenre: "Drama",
+            },
+          ],
         },
       ],
     };

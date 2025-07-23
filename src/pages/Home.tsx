@@ -9,7 +9,7 @@ import "./Home.scss";
 interface HomeProps {
   initialData?: InitialData;
 }
-interface InitialData {
+export interface InitialData {
   selectedGenresData?: SelectedGenre[];
   error?: string;
   [key: string]: unknown;
