@@ -1,0 +1,12 @@
+@use "./variables.scss" as *;
+
+.box {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: $spacing-md;
+}
+
+.font-bold {
+  font-weight: bold;
+}

@@ -10,10 +10,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const isProduction = process.env.NODE_ENV === "production";
 const port = process.env.PORT || 5173;
 
-// Cached production assets
-const templateHtml = isProduction
-  ? await fs.readFile("./dist/client/index.html", "utf-8")
-  : "";
+let templateHtml = "";
+
+// In production mode, read the file when the server starts
+
+if (isProduction) {
+  templateHtml = await fs.readFile("./dist/client/index.html", "utf-8");
+}
 
 // Create http server
 const app = express();
@@ -32,7 +35,7 @@ if (!isProduction) {
 }
 
 // Serve HTML
-app.use("/{*any}", async (req, res, next) => {
+app.use("/{*any}", async (req, res) => {
   try {
     const url = req.originalUrl;
 

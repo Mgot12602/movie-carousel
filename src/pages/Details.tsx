@@ -1,10 +1,10 @@
+import { CSSProperties } from "react";
 import { GenreName, MovieDetails, MovieDetailsResponse } from "@/types/movie";
 import buildImageUrl from "@/utils/buildImageUrl";
 import "./Details.scss"; // Import the SCSS file from the same directory
 import Layout from "@/components/UI/Layout/Layout";
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router";
 import useInitialData from "@/hooks/useInitialData";
+import useFavoriteMoviesStore from "@/stores/useFavoriteMoviesStore";
 
 type FontFamily = "Segoe UI" | "Roboto" | "Oxygen";
 
@@ -20,19 +20,29 @@ interface DetailsProps {
 interface InitialData {
   movieDetails: MovieDetails;
   error?: string;
+  [key: string]: unknown;
 }
 
 const Details = ({ initialData }: DetailsProps) => {
   const { initialDataState } = useInitialData<InitialData>(initialData);
   const movieDetails = initialDataState?.movieDetails;
+  const { getOne, favorite, unfavorite } = useFavoriteMoviesStore();
 
   if (!movieDetails) {
     return <div>Loading...</div>;
   }
 
-  /* const { error, movieDetails } = initialData; */
+  const isFavorite = !!getOne(movieDetails.id);
   const fontFamily = detailsFontsConfig[movieDetails.carouselGenre];
   console.log("fontFamily", fontFamily);
+
+  const toggleFavorite = () => {
+    if (isFavorite) {
+      unfavorite(movieDetails.id);
+    } else {
+      favorite(movieDetails);
+    }
+  };
 
   return (
     <Layout>
@@ -41,7 +51,7 @@ const Details = ({ initialData }: DetailsProps) => {
         style={
           {
             "--details-font-family": fontFamily,
-          } as React.CSSProperties
+          } as CSSProperties
         }
       >
         <div className="details-container__image-description-box">
@@ -51,12 +61,27 @@ const Details = ({ initialData }: DetailsProps) => {
           <section className="details-container__description details-container__box">
             <h1>{movieDetails.title}</h1>
             <p>{movieDetails.description}</p>
+            <button
+              className="favorite-button"
+              onClick={toggleFavorite}
+              aria-label={
+                isFavorite ? "Remove from favorites" : "Add to favorites"
+              }
+            >
+              <span className="heart-icon">{isFavorite ? "♥" : "♡"}</span>
+            </button>
           </section>
         </div>
         <section className="details-container__box">
           <h2>Additional Information</h2>
-          <p>Release Date: {movieDetails.additionalInfo.releaseDate}</p>
-          <p>Status: {movieDetails.additionalInfo.status}</p>
+          <p>
+            <span className="font-bold">Release Date: </span>
+            {movieDetails.additionalInfo.releaseDate}
+          </p>
+          <p>
+            <span className="font-bold">Status: </span>
+            {movieDetails.additionalInfo.status}
+          </p>
         </section>
       </div>
     </Layout>
@@ -86,7 +111,6 @@ const fetchDetailsData = async (
     const movieDetailsResponse = await movieApi.getDetailsById(Number(id));
     console.log("movie Details", movieDetailsResponse);
 
-    // Domain mapper function
     const movieDetailsToDomainMapper = (
       movieDetailsResponse: MovieDetailsResponse
     ): MovieDetails => {
@@ -118,6 +142,8 @@ const fetchDetailsData = async (
   }
 };
 
-Details.getServerSideData = async (url: string): Promise<any> => {
+Details.getServerSideData = async (
+  url: string
+): Promise<Record<string, unknown>> => {
   return await fetchDetailsData(url);
 };

@@ -9,7 +9,7 @@ import "./styles/main.scss";
 
 // Get server-side rendered data from the DOM
 const dataTag = document.getElementById("__SSR_DATA__");
-const initialData: Record<string, any> = dataTag
+const initialData: Record<string, unknown> = dataTag
   ? JSON.parse(dataTag.textContent || "{}")
   : {};
 

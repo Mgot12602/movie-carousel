@@ -14,11 +14,11 @@
     padding: $spacing-md 0;
 
     @media (min-width: $breakpoint-md) {
-      padding: 0 $spacing-lg;
+      padding: $spacing-md $spacing-lg;
     }
 
     @media (min-width: $breakpoint-lg) {
-      padding: 0 $spacing-xl;
+      padding: $spacing-md $spacing-xl;
     }
   }
 }

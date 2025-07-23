@@ -67,7 +67,7 @@ export class BaseApi {
   /**
    * Handle HTTP response and errors
    */
-  private async handleResponse<T = any>(response: Response): Promise<T> {
+  private async handleResponse<T = unknown>(response: Response): Promise<T> {
     if (!response.ok) {
       let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
 
@@ -112,7 +112,7 @@ export class BaseApi {
   /**
    * GET request
    */
-  protected async get<T = any>(
+  protected async get<T = unknown>(
     endpoint: string,
     options: RequestOptions = {}
   ): Promise<T> {
@@ -128,9 +128,9 @@ export class BaseApi {
   /**
    * POST request
    */
-  protected async post<T = any>(
+  protected async post<T = unknown>(
     endpoint: string,
-    data: any = null,
+    data: unknown = null,
     options: RequestOptions = {}
   ): Promise<T> {
     const url = `${this.baseURL}${endpoint}`;
@@ -145,9 +145,9 @@ export class BaseApi {
   /**
    * PUT request
    */
-  protected async put<T = any>(
+  protected async put<T = unknown>(
     endpoint: string,
-    data: any = null,
+    data: unknown = null,
     options: RequestOptions = {}
   ): Promise<T> {
     const url = `${this.baseURL}${endpoint}`;
@@ -162,7 +162,7 @@ export class BaseApi {
   /**
    * DELETE request
    */
-  protected async delete<T = any>(
+  protected async delete<T = unknown>(
     endpoint: string,
     options: RequestOptions = {}
   ): Promise<T> {

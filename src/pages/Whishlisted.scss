@@ -1,0 +1,16 @@
+@use "@/styles/variables.scss" as *;
+
+.favorite-movies-list {
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+
+  .favorite-movie-item {
+    div {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      width: 100%;
+    }
+  }
+}

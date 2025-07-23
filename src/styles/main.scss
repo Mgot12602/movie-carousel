@@ -1,4 +1,5 @@
 @use "./variables.scss" as *;
+@use "./utilities.scss" as *;
 
 * {
   margin: 0;
@@ -22,20 +23,39 @@ body {
   overflow-x: hidden;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
 // Global link styles
 a {
-  color: inherit;
+  color: $cta-color;
   text-decoration: none;
 
   &:hover {
-    opacity: 0.8;
+    color: $cta-color-hover;
   }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: $secondary-text-color;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+p {
+  color: $primary-text-color;
 }
 
 // Global button styles

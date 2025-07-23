@@ -6,7 +6,7 @@ import { routes, type Route as RouteConfig } from "./routes";
  * Props for the App component
  */
 interface AppProps {
-  initialData?: Record<string, any>;
+  initialData?: Record<string, unknown> | null;
 }
 
 /**

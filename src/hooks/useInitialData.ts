@@ -5,7 +5,7 @@ import { useLocation } from "react-router";
  * Hook to handle initial data fetching and state management
  * @template T - Type of the initial data
  */
-const useInitialData = <T extends Record<string, any>>(initialData?: T) => {
+const useInitialData = <T extends Record<string, unknown>>(initialData?: T) => {
   const location = useLocation();
   const currentUrl = location.pathname + location.search;
   console.log("currentUrl", currentUrl);

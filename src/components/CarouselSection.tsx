@@ -16,6 +16,7 @@ export const CarouselSection: React.FC<Props> = ({ title, items }) => {
   const itemsToShow = 8;
 
   // Convert MovieItem to ICarouselItem for the Carousel
+
   const carouselItems = items.map((item) => ({
     id: item.id,
     image: item.image,
@@ -24,17 +25,15 @@ export const CarouselSection: React.FC<Props> = ({ title, items }) => {
 
   const onClickItem = (item: ICarouselItem) => {
     const url = buildUrl("details", {
-      genre: item.carouselGenre,
+      genre: item.carouselGenre as string,
       id: item.id,
     });
     navigate(url);
   };
 
   return (
-    <div className="carousel-section">
-      <div className="carousel-header">
-        <h3>{title}</h3>
-      </div>
+    <div className="box carousel-section">
+      <h3>{title}</h3>
       <Carousel
         items={carouselItems}
         itemsToShow={itemsToShow}

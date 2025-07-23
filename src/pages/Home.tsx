@@ -1,16 +1,10 @@
 import React from "react";
 import { CarouselSection } from "@/components/CarouselSection";
-
-import {
-  Genre,
-  GenreName,
-  ImageSizes,
-  Movie,
-  SelectedGenre,
-} from "@/types/movie";
+import { Genre, GenreName, Movie, SelectedGenre } from "@/types/movie";
 import buildImageUrl from "@/utils/buildImageUrl";
 import Layout from "@/components/UI/Layout/Layout";
 import useInitialData from "@/hooks/useInitialData";
+import "./Home.scss";
 
 interface HomeProps {
   initialData?: InitialData;
@@ -18,6 +12,7 @@ interface HomeProps {
 interface InitialData {
   selectedGenresData?: SelectedGenre[];
   error?: string;
+  [key: string]: unknown;
 }
 
 interface ComponentWithSSR {
@@ -31,7 +26,7 @@ const Home: React.FC<HomeProps> & ComponentWithSSR = ({ initialData = {} }) => {
   return (
     <Layout>
       {selectedGenresData && selectedGenresData.length > 0 ? (
-        <div>
+        <div className="home-carousel-section__container">
           {selectedGenresData.map((genreData) => (
             <CarouselSection
               title={genreData.genre}
@@ -78,21 +73,23 @@ Home.getServerSideData = async (): Promise<InitialData> => {
 
     const selectedGenresResponse = await Promise.all(genrePromises);
 
+    type SelectedGenresResponse = {
+      genre: GenreName;
+      movies: Movie[];
+    }[];
     function selectedGenresToDomainMapper(
-      selectedGenresResponse: any
+      selectedGenresResponse: SelectedGenresResponse
     ): SelectedGenre[] {
-      return selectedGenresResponse.map(
-        (genreSelection: { genre: GenreName; movies: Movie[] }) => ({
-          genre: genreSelection.genre,
-          movies: genreSelection.movies.map((movie: Movie) => ({
-            id: movie.id,
-            title: movie.title,
-            image: buildImageUrl(movie.poster_path, "w154"),
-            posterPath: movie.poster_path,
-            carouselGenre: genreSelection.genre,
-          })),
-        })
-      );
+      return selectedGenresResponse.map((genreSelection) => ({
+        genre: genreSelection.genre,
+        movies: genreSelection.movies.map((movie: Movie) => ({
+          id: movie.id,
+          title: movie.title,
+          image: buildImageUrl(movie.poster_path, "w154"),
+          posterPath: movie.poster_path ?? "",
+          carouselGenre: genreSelection.genre,
+        })),
+      }));
     }
 
     const selectedGenresData = selectedGenresToDomainMapper(

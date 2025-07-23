@@ -4,7 +4,7 @@ import "./Carousel.scss";
 export interface ICarouselItem {
   id: number;
   image: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 interface Props {

@@ -10,7 +10,7 @@ import { routes, type Route } from "./routes.js";
  */
 export interface RenderResult {
   html: string;
-  initialData: any;
+  initialData: Record<string, unknown> | null;
 }
 
 /**
@@ -23,16 +23,14 @@ function getPathFromUrl(url: string): string {
 /**
  * Get initial data for server-side rendering
  */
-async function getInitialData(url: string): Promise<any> {
-  console.log("url in get InitialData", url);
+async function getInitialData(
+  url: string
+): Promise<Record<string, unknown> | null> {
   try {
     const path = getPathFromUrl(url);
     const match = routes.find((r: Route) => {
-      console.log("r.path", r.path);
-      console.log("path", path);
       return r.path === path;
     });
-    console.log("Match", match);
     if (!match) {
       return null;
     }

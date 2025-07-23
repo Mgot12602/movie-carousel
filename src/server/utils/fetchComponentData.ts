@@ -5,7 +5,7 @@ import { ComponentType } from "react";
  */
 type Component =
   | (ComponentType & {
-      getServerSideData?: (url: string) => Promise<any>;
+      getServerSideData?: (url: string) => Promise<Record<string, unknown>>;
     })
   | null;
 
@@ -16,7 +16,7 @@ type Component =
 export async function fetchComponentData(
   Component: Component,
   url: string
-): Promise<any> {
+): Promise<Record<string, unknown>> {
   if (Component?.getServerSideData) {
     try {
       return await Component.getServerSideData(url);

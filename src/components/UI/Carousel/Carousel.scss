@@ -44,22 +44,20 @@
 }
 
 .carousel-arrow {
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
+  color: $cta-color;
   border: none;
-  border-radius: 50%;
+  font-size: $icon-font-size;
   width: 40px;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 24px;
   z-index: 2;
   transition: background 0.2s ease;
 
   &:hover:not(:disabled) {
-    background: rgba(0, 0, 0, 0.8);
+    color: $cta-color-hover;
   }
 
   &:disabled {
@@ -86,12 +84,6 @@
 @media screen and (max-width: 768px) {
   .carousel-item {
     flex: 0 0 calc(100% / 2); // Show 2 items on small tablets
-  }
-
-  .carousel-arrow {
-    width: 30px;
-    height: 30px;
-    font-size: 20px;
   }
 }
 

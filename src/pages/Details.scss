@@ -6,26 +6,29 @@
   font-family: var(--details-font-family, "Times New Roman");
 
   &__box {
-    padding: 1.5rem;
+    padding: $spacing-md;
   }
   &__image {
     flex: 2;
   }
   &__description {
     flex: 1;
-    gap: 0.5rem;
+    gap: $spacing-sm;
     display: flex;
     flex-direction: column;
+    p {
+      overflow-y: auto;
+    }
   }
   &__additional-info {
-    gap: 0.5rem;
+    gap: $spacing-sm;
     display: flex;
     flex-direction: column;
   }
   &__image-description-box {
     display: flex;
     max-height: 400px;
-    overflow: hidden;
+
     @media (max-width: $breakpoint-md) {
       flex-direction: column;
       max-height: none;
@@ -37,4 +40,18 @@
     object-fit: cover;
     object-position: top;
   }
+}
+
+// Simple favorite button styles
+.favorite-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: $spacing-sm;
+  align-self: flex-start;
+}
+
+.heart-icon {
+  font-size: 2rem;
+  color: #ff6b6b;
 }
