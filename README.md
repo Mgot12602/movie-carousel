@@ -77,5 +77,3 @@ yarn build
 - [ ] Implement a unified error management strategy with customizable logging levels.
 - [ ] Enable compression on build chunks to reduce bundle size.
 - [ ] Improve folder structure (e.g., move all `Details`-related files into a `Details/` folder).
-
----
