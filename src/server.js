@@ -34,7 +34,6 @@ if (!isProduction) {
   app.use(express.static(resolve(__dirname, "dist/client")));
 }
 
-// Serve HTML
 app.use("/{*any}", async (req, res) => {
   try {
     const url = req.originalUrl;
@@ -43,14 +42,13 @@ app.use("/{*any}", async (req, res) => {
     let render;
 
     if (!isProduction && vite) {
-      // Always read fresh template in development
       template = await fs.readFile("./index.html", "utf-8");
       template = await vite.transformIndexHtml(url, template);
       const module = await vite.ssrLoadModule("/src/server-entry.tsx");
       render = module.render;
     } else {
       template = templateHtml;
-      const module = await import("./dist/server/server-entry.js");
+      const module = await import("./server-entry.js");
       render = module.render;
     }
 
@@ -72,7 +70,6 @@ app.use("/{*any}", async (req, res) => {
   }
 });
 
-// Start http server
 app.listen(port, () => {
   console.log(`Server started at http://localhost:${port}`);
 });

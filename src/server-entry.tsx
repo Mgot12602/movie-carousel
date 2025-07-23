@@ -2,8 +2,8 @@ import React from "react";
 import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router";
 import App from "./App";
-import { fetchComponentData } from "./server/utils/fetchComponentData.js";
-import { routes, type Route } from "./routes.js";
+import { fetchComponentData } from "./server/utils/fetchComponentData";
+import { routes, type Route } from "./routes";
 
 /**
  * Server-side rendering result

@@ -8,9 +8,10 @@
     "dev": "node src/server",
     "build": "yarn build:client && yarn build:server",
     "build:client": "vite build --mode production --outDir dist/client",
-    "build:server": "vite build --mode production --outDir dist/server --ssr src/server.ts",
+    "build:server": "vite build --ssr src/server.js --outDir dist/server",
     "start": "node dist/server/server.js",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "eslint": "eslint src --ext ts,tsx --fix"
   },
   "dependencies": {
     "@types/react-slick": "^0.23.13",

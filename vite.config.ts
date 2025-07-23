@@ -27,11 +27,11 @@ export default defineConfig(({ command, mode }) => {
   };
 
   if (isSSRBuild) {
-    // Server build configuration
+    // Server build configuration - use the specific input file from command line
     config.build = {
       ssr: true,
       rollupOptions: {
-        input: "src/server.ts", // Updated to TypeScript
+        input: "src/server.js",
         output: {
           format: "es",
         },

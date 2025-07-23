@@ -15,6 +15,7 @@ export default [
           jsx: true,
         },
       },
+      exclude: ["vite.config.js"],
       globals: {
         console: "readonly",
         process: "readonly",
