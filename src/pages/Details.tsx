@@ -1,10 +1,10 @@
 import { CSSProperties } from "react";
 import { GenreName, MovieDetails, MovieDetailsResponse } from "@/types/movie";
 import buildImageUrl from "@/utils/buildImageUrl";
-import "./Details.scss";
 import Layout from "@/components/UI/Layout/Layout";
 import useInitialData from "@/hooks/useInitialData";
 import useFavoriteMoviesStore from "@/stores/useFavoriteMoviesStore";
+import "./Details.scss";
 
 type FontFamily = "Merriweather" | "Roboto" | "Pacifico";
 
@@ -25,10 +25,11 @@ interface InitialData {
 
 const Details = ({ initialData }: DetailsProps) => {
   const { initialDataState } = useInitialData<InitialData>(initialData);
-  const movieDetails = initialDataState?.movieDetails;
   const { getOne, favorite, unfavorite } = useFavoriteMoviesStore();
+  const movieDetails = initialDataState?.movieDetails;
 
   const isFavorite = movieDetails ? !!getOne(movieDetails.id) : false;
+
   const fontFamily = movieDetails
     ? detailsFontsConfig[movieDetails.carouselGenre]
     : "";
@@ -93,22 +94,17 @@ const fetchDetailsData = async (
   url: string
 ): Promise<{ movieDetails?: MovieDetails; error?: string }> => {
   try {
-    console.log("Fetching details data for URL:", url);
     const { movieApi } = await import("@/services/index");
 
     const newUrl = new URL(url, "http://localhost");
     const id = newUrl.searchParams.get("id");
     const genre = newUrl.searchParams.get("genre") as GenreName;
 
-    if (!id) {
-      console.error("id or genre is not defined");
-      return {
-        error: "id or genre is not defined",
-      };
+    if (!id || !genre) {
+      throw new Error("id or genre is not defined");
     }
 
     const movieDetailsResponse = await movieApi.getDetailsById(Number(id));
-    console.log("movie Details", movieDetailsResponse);
 
     const movieDetailsToDomainMapper = (
       movieDetailsResponse: MovieDetailsResponse
@@ -118,7 +114,7 @@ const fetchDetailsData = async (
         title: movieDetailsResponse.title,
         description: movieDetailsResponse.overview ?? "",
         image: buildImageUrl(movieDetailsResponse.poster_path, "w500"),
-        carouselGenre: genre ?? "Action",
+        carouselGenre: genre,
         additionalInfo: {
           releaseDate: movieDetailsResponse.release_date,
           status: movieDetailsResponse.status,

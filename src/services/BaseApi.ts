@@ -117,7 +117,6 @@ export class BaseApi {
     options: RequestOptions = {}
   ): Promise<T> {
     const url = `${this.baseURL}${endpoint}`;
-    console.log("url", url);
     const response = await this.fetchWithTimeout(url, {
       method: "GET",
       ...options,
