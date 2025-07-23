@@ -25,8 +25,13 @@ vi.mock("@/components/UI/Layout/Layout", () => {
 vi.mock("@/components/CarouselSection", () => {
   return {
     __esModule: true,
-    CarouselSection: ({ title }: { title: string }) => (
-      <div data-testid="carousel-section">{title}</div>
+    CarouselSection: ({ title, items }: { title: string; items: any[] }) => (
+      <div data-testid="carousel-section">
+        <h3>{title}</h3>
+        {items?.map((item) => (
+          <p key={item.id}>{item.title}</p>
+        ))}
+      </div>
     ),
   };
 });
@@ -59,5 +64,34 @@ describe("Home component", () => {
     expect(screen.getByText("Drama")).toBeInTheDocument();
 
     expect(screen.queryByText(/Loading/i)).not.toBeInTheDocument();
+  });
+
+  it("renders movie titles within each carousel section", () => {
+    mockInitialData = {
+      selectedGenresData: [
+        {
+          genre: "Action",
+          movies: [
+            { id: 1, title: "Action Movie 1" },
+            { id: 2, title: "Action Movie 2" },
+          ],
+        },
+        {
+          genre: "Comedy",
+          movies: [{ id: 3, title: "Comedy Movie 1" }],
+        },
+        {
+          genre: "Drama",
+          movies: [{ id: 4, title: "Drama Movie 1" }],
+        },
+      ],
+    };
+
+    render(<Home initialData={mockInitialData} />);
+
+    expect(screen.getByText("Action Movie 1")).toBeInTheDocument();
+    expect(screen.getByText("Action Movie 2")).toBeInTheDocument();
+    expect(screen.getByText("Comedy Movie 1")).toBeInTheDocument();
+    expect(screen.getByText("Drama Movie 1")).toBeInTheDocument();
   });
 });

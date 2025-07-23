@@ -17,7 +17,7 @@ const detailsFontsConfig: Record<string, FontFamily> = {
 interface DetailsProps {
   initialData?: InitialData;
 }
-interface InitialData {
+export interface InitialData {
   movieDetails: MovieDetails;
   error?: string;
   [key: string]: unknown;
