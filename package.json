@@ -11,7 +11,8 @@
     "build:server": "vite build --ssr src/server.js --outDir dist/server",
     "start": "node dist/server/server.js",
     "type-check": "tsc --noEmit",
-    "eslint": "eslint src --ext ts,tsx --fix"
+    "eslint": "eslint src --ext ts,tsx --fix",
+    "test": "vitest"
   },
   "dependencies": {
     "@types/react-slick": "^0.23.13",
@@ -23,6 +24,9 @@
     "zustand": "^5.0.6"
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
     "@types/express": "^5.0.3",
     "@types/node": "^24.0.15",
     "@types/react": "^19.1.8",
@@ -31,8 +35,10 @@
     "@typescript-eslint/parser": "^8.38.0",
     "@vitejs/plugin-react": "^4.6.0",
     "eslint": "^9.31.0",
+    "jsdom": "^26.1.0",
     "sass": "^1.89.2",
     "typescript": "^5.8.3",
-    "vite": "^7.0.5"
+    "vite": "^7.0.5",
+    "vitest": "^3.2.4"
   }
 }

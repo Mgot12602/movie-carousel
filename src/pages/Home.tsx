@@ -25,7 +25,7 @@ const Home: React.FC<HomeProps> & ComponentWithSSR = ({ initialData = {} }) => {
 
   return (
     <Layout>
-      {selectedGenresData && selectedGenresData.length > 0 ? (
+      {selectedGenresData?.length ? (
         <div className="home-carousel-section__container">
           {selectedGenresData.map((genreData) => (
             <CarouselSection
@@ -41,6 +41,26 @@ const Home: React.FC<HomeProps> & ComponentWithSSR = ({ initialData = {} }) => {
     </Layout>
   );
 };
+
+type SelectedGenresResponse = {
+  genre: GenreName;
+  movies: Movie[];
+}[];
+
+function selectedGenresToDomainMapper(
+  selectedGenresResponse: SelectedGenresResponse
+): SelectedGenre[] {
+  return selectedGenresResponse.map((genreSelection) => ({
+    genre: genreSelection.genre,
+    movies: genreSelection.movies.map((movie: Movie) => ({
+      id: movie.id,
+      title: movie.title,
+      image: buildImageUrl(movie.poster_path, "w154"),
+      posterPath: movie.poster_path ?? "",
+      carouselGenre: genreSelection.genre,
+    })),
+  }));
+}
 
 Home.getServerSideData = async (): Promise<InitialData> => {
   try {
@@ -73,25 +93,6 @@ Home.getServerSideData = async (): Promise<InitialData> => {
 
     const selectedGenresResponse = await Promise.all(genrePromises);
 
-    type SelectedGenresResponse = {
-      genre: GenreName;
-      movies: Movie[];
-    }[];
-    function selectedGenresToDomainMapper(
-      selectedGenresResponse: SelectedGenresResponse
-    ): SelectedGenre[] {
-      return selectedGenresResponse.map((genreSelection) => ({
-        genre: genreSelection.genre,
-        movies: genreSelection.movies.map((movie: Movie) => ({
-          id: movie.id,
-          title: movie.title,
-          image: buildImageUrl(movie.poster_path, "w154"),
-          posterPath: movie.poster_path ?? "",
-          carouselGenre: genreSelection.genre,
-        })),
-      }));
-    }
-
     const selectedGenresData = selectedGenresToDomainMapper(
       selectedGenresResponse
     );
@@ -104,8 +105,6 @@ Home.getServerSideData = async (): Promise<InitialData> => {
       "Failed to fetch genres from API, falling back to mock data:",
       error
     );
-
-    // Fallback to mock data if API fails
     return {
       selectedGenresData: [],
       error: `API Error: ${
