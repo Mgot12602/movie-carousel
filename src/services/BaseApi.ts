@@ -1,22 +1,13 @@
-/**
- * Base API configuration options
- */
 export interface BaseApiOptions {
   headers?: Record<string, string>;
   timeout?: number;
   authToken?: string;
 }
 
-/**
- * HTTP request options
- */
 export interface RequestOptions extends RequestInit {
   headers?: Record<string, string>;
 }
 
-/**
- * Base API class with common fetch logic and error handling
- */
 export class BaseApi {
   protected baseURL: string;
   protected defaultHeaders: Record<string, string>;
@@ -30,12 +21,9 @@ export class BaseApi {
         : {}),
       ...options.headers,
     };
-    this.timeout = options.timeout || 10000; // 10 seconds default
+    this.timeout = options.timeout || 10000;
   }
 
-  /**
-   * Create fetch request with timeout
-   */
   private async fetchWithTimeout(
     url: string,
     options: RequestOptions = {}
@@ -64,14 +52,10 @@ export class BaseApi {
     }
   }
 
-  /**
-   * Handle HTTP response and errors
-   */
   private async handleResponse<T = unknown>(response: Response): Promise<T> {
     if (!response.ok) {
       let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
 
-      // Try to get error details from response body
       try {
         const errorData = await response.json();
         if (errorData.message) {
@@ -79,11 +63,8 @@ export class BaseApi {
         } else if (errorData.error) {
           errorMessage = errorData.error;
         }
-      } catch {
-        // If response body is not JSON, use status text
-      }
+      } catch {}
 
-      // Handle specific status codes
       switch (response.status) {
         case 404:
           throw new Error(`Resource not found: ${errorMessage}`);
@@ -100,18 +81,13 @@ export class BaseApi {
       }
     }
 
-    // Try to parse JSON response
     try {
       return await response.json();
     } catch {
-      // If not JSON, return text
       return (await response.text()) as T;
     }
   }
 
-  /**
-   * GET request
-   */
   protected async get<T = unknown>(
     endpoint: string,
     options: RequestOptions = {}
@@ -124,9 +100,6 @@ export class BaseApi {
     return this.handleResponse<T>(response);
   }
 
-  /**
-   * POST request
-   */
   protected async post<T = unknown>(
     endpoint: string,
     data: unknown = null,
@@ -141,9 +114,6 @@ export class BaseApi {
     return this.handleResponse<T>(response);
   }
 
-  /**
-   * PUT request
-   */
   protected async put<T = unknown>(
     endpoint: string,
     data: unknown = null,
@@ -158,9 +128,6 @@ export class BaseApi {
     return this.handleResponse<T>(response);
   }
 
-  /**
-   * DELETE request
-   */
   protected async delete<T = unknown>(
     endpoint: string,
     options: RequestOptions = {}

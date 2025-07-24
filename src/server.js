@@ -12,16 +12,12 @@ const port = process.env.PORT || 5173;
 
 let templateHtml = "";
 
-// In production mode, read the file when the server starts
-
 if (isProduction) {
   templateHtml = await fs.readFile("./dist/client/index.html", "utf-8");
 }
 
-// Create http server
 const app = express();
 
-// Add Vite or respective production middlewares
 let vite;
 if (!isProduction) {
   const { createServer } = await import("vite");

@@ -27,7 +27,6 @@ export default defineConfig(({ command, mode }) => {
   };
 
   if (isSSRBuild) {
-    // Server build configuration - use the specific input file from command line
     config.build = {
       ssr: true,
       rollupOptions: {
@@ -38,7 +37,6 @@ export default defineConfig(({ command, mode }) => {
       },
     };
   } else {
-    // Client build configuration
     config.build = {
       rollupOptions: {
         input: resolve(__dirname, "index.html"),

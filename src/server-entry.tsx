@@ -1,28 +1,18 @@
-import React from "react";
 import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router";
 import App from "./App";
 import { fetchComponentData } from "./server/utils/fetchComponentData";
 import { routes, type Route } from "./routes";
 
-/**
- * Server-side rendering result
- */
 export interface RenderResult {
   html: string;
   initialData: Record<string, unknown> | null;
 }
 
-/**
- * Extract path from URL (remove query parameters)
- */
 function getPathFromUrl(url: string): string {
   return url.split("?")[0];
 }
 
-/**
- * Get initial data for server-side rendering
- */
 async function getInitialData(
   url: string
 ): Promise<Record<string, unknown> | null> {
@@ -43,9 +33,6 @@ async function getInitialData(
   }
 }
 
-/**
- * Render the React app to HTML string with initial data
- */
 export async function render(url: string): Promise<RenderResult> {
   const initialData = await getInitialData(url);
   const html = renderToString(

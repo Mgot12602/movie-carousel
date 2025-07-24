@@ -10,12 +10,10 @@ interface Props {
   items: MovieItem[];
 }
 
+const ITEMS_TO_SHOW = 8;
+
 export const CarouselSection: React.FC<Props> = ({ title, items }) => {
   const navigate = useNavigate();
-  // Default items to show - can be made responsive if needed
-  const itemsToShow = 8;
-
-  // Convert MovieItem to ICarouselItem for the Carousel
 
   const carouselItems = items.map((item) => ({
     id: item.id,
@@ -36,7 +34,7 @@ export const CarouselSection: React.FC<Props> = ({ title, items }) => {
       <h3>{title}</h3>
       <Carousel
         items={carouselItems}
-        itemsToShow={itemsToShow}
+        itemsToShow={ITEMS_TO_SHOW}
         onClickItem={onClickItem}
       />
     </div>
