@@ -22,7 +22,7 @@
 }
 
 .carousel-item {
-  flex: 0 0 calc(100% / var(--items-to-show, 4)); /* Use CSS variable with fallback to 4 */
+  flex: 0 0 calc(100% / var(--items-to-show, 6));
   padding: 0 5px;
   box-sizing: border-box;
   cursor: pointer;
@@ -74,21 +74,5 @@
   }
 }
 
-// Responsive adjustments
-@media screen and (max-width: 1024px) {
-  .carousel-item {
-    flex: 0 0 calc(100% / 3); // Show 3 items on tablets
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .carousel-item {
-    flex: 0 0 calc(100% / 2); // Show 2 items on small tablets
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .carousel-item {
-    flex: 0 0 100%; // Show 1 item on mobile
-  }
-}
+// Responsive behavior is now handled dynamically by JavaScript
+// The --items-to-show CSS variable is updated based on screen width

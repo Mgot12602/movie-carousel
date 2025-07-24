@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { BREAKPOINTS } from "../../../constants/breakpoints";
 import "./Carousel.scss";
 
 export interface ICarouselItem {
@@ -13,15 +14,38 @@ interface Props {
   onClickItem?: (item: ICarouselItem) => void;
 }
 
+const DEFAULT_ITEMS_TO_SHOW = 6;
 export const Carousel: React.FC<Props> = ({
   items,
   onClickItem,
-  itemsToShow = 6,
+  itemsToShow: propItemsToShow,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [responsiveItemsToShow, setResponsiveItemsToShow] = useState(
+    propItemsToShow ?? DEFAULT_ITEMS_TO_SHOW
+  );
 
-  // Calculate max index based on items length and items to show
-  const maxIndex = Math.max(0, items.length - itemsToShow);
+  useEffect(() => {
+    const calculateItemsToShow = () => {
+      const width = window.innerWidth;
+      if (width <= BREAKPOINTS.SM) return 1;
+      if (width <= BREAKPOINTS.MD) return 2;
+      if (width <= BREAKPOINTS.LG) return 3;
+      return propItemsToShow ?? DEFAULT_ITEMS_TO_SHOW;
+    };
+
+    const handleResize = () => {
+      setResponsiveItemsToShow(calculateItemsToShow());
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, [propItemsToShow]);
+
+  const maxIndex = Math.max(0, items.length - responsiveItemsToShow);
 
   const scrollRight = () => {
     if (currentIndex < maxIndex) {
@@ -40,7 +64,7 @@ export const Carousel: React.FC<Props> = ({
       className="carousel-container"
       style={
         {
-          "--items-to-show": itemsToShow,
+          "--items-to-show": responsiveItemsToShow,
           "--current-index": currentIndex,
         } as React.CSSProperties
       }

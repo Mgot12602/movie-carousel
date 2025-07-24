@@ -84,3 +84,5 @@ yarn start
 - [ ] Implement a unified error management strategy with customizable logging levels.
 - [ ] Enable compression on build chunks to reduce bundle size.
 - [ ] Improve folder structure (e.g., move all `Details`-related files into a `Details/` folder).
+- [ ] Fix the FUOC (Flash of unstyled component ) with injecting the css in the server side.
+- [ ] Handle the pagination of the movie items, before the user reach the last item, it should load the next page of movies.
