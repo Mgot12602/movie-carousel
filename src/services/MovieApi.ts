@@ -2,8 +2,8 @@ import {
   GenreListResponse,
   MovieDetailsResponse,
   MovieListResponse,
-} from "@/types/movie.js";
-import { BaseApi } from "./BaseApi.js";
+} from "@/types/movie";
+import { BaseApi } from "./BaseApi";
 import buildUrl from "@/utils/buildUrl";
 
 const getRequiredEnv = (key: string): string => {

@@ -65,11 +65,14 @@ yarn start
 - State management is handled with **Zustand**, using `localStorage` persistence to simulate the "favorites" feature.
 - While TMDB API supports adding favorites via guest sessions, it presented issues with authentication as per its documentation. Given that Mytheresa uses TMDB as a source, a local implementation was chosen instead for reliability.
 - Added test support with vitest with react-testing-library
+- The image in details apears trimmed because as I understood the requirements of the project it should have that shape being filled by the image, but as the image has a different aspect it only can apear trimmed. That is more a product design concept that
+  I would ask for clarification in case it was a real project.
 
 ---
 
 ## 💡 Suggestions for Improvement
 
+- [ ] Fix the FUOC (Flash of unstyled component ) with injecting the css in the server side.
 - [ ] Implement lazy loading for images.
 - [ ] Use ISR (Incremental Static Regeneration) to cache HTML and server responses.
 - [ ] Add dynamic metadata for SEO at server level per page.
@@ -83,6 +86,5 @@ yarn start
 - [ ] Add React error boundaries to gracefully handle rendering errors.
 - [ ] Implement a unified error management strategy with customizable logging levels.
 - [ ] Enable compression on build chunks to reduce bundle size.
-- [ ] Improve folder structure (e.g., move all `Details`-related files into a `Details/` folder).
-- [ ] Fix the FUOC (Flash of unstyled component ) with injecting the css in the server side.
 - [ ] Handle the pagination of the movie items, before the user reach the last item, it should load the next page of movies.
+- [ ] Improve accessibility and tooltips in all the elements.

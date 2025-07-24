@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BREAKPOINTS } from "../../../constants/breakpoints";
+import { BREAKPOINTS } from "@/constants/breakpoints";
 import "./Carousel.scss";
 
 export interface ICarouselItem {

@@ -3,7 +3,7 @@ import useFavoriteMoviesStore from "@/stores/useFavoriteMoviesStore";
 import { Link } from "react-router";
 import Layout from "@/components/UI/Layout/Layout";
 import trashIcon from "@/assets/icons/trash-icon.svg";
-import "./Whishlisted.scss";
+import "./Wishlisted.scss";
 
 const Whishlisted: React.FC = () => {
   const { getAll, unfavorite } = useFavoriteMoviesStore();

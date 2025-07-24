@@ -1,7 +1,7 @@
 import { ComponentType } from "react";
 import Home from "@/pages/Home";
 import Details from "@/pages/Details";
-import Whishlisted from "./pages/Whishlisted";
+import Wishlisted from "@/pages/Wishlisted";
 
 /**
  * Route configuration interface
@@ -25,6 +25,6 @@ export const routes: Route[] = [
   },
   {
     path: "/wishlisted",
-    component: Whishlisted,
+    component: Wishlisted,
   },
 ];

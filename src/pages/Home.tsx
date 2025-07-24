@@ -1,5 +1,5 @@
 import React from "react";
-import { CarouselSection } from "@/components/CarouselSection";
+import { CarouselSection } from "@/components/common/CarouselSection";
 import { Genre, GenreName, Movie, SelectedGenre } from "@/types/movie";
 import buildImageUrl from "@/utils/buildImageUrl";
 import Layout from "@/components/UI/Layout/Layout";

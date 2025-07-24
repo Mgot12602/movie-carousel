@@ -23,7 +23,7 @@ vi.mock("@/components/UI/Layout/Layout", () => {
   };
 });
 
-vi.mock("@/components/CarouselSection", () => {
+vi.mock("@/components/common/CarouselSection", () => {
   return {
     __esModule: true,
     CarouselSection: ({ title, items }: { title: string; items: Movie[] }) => (
